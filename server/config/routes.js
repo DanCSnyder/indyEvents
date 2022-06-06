@@ -3,6 +3,8 @@ const router = new express.Router();
 
 const scraper = require("../controllers/scraper");
 
-router.get("/", scraper.getAll);
+let browserInstance = browser.startBrowser();
+
+router.get("/scrape", scraper(browserInstance));
 
 module.exports = router;

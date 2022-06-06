@@ -1,9 +1,14 @@
-const scraper = {
-  getAll(req, res) {
-    res.send("hello world!");
+const pageScraper = require('./pageScraper');
+async function scrapeAll(browserInstance){
+	let browser;
+	try{
+		browser = await browserInstance;
+		await pageScraper.scraper(browser);	
+		
+	}
+	catch(err){
+		console.log("Could not resolve the browser instance => ", err);
+	}
+}
 
-    console.log("testtesttest");
-  },
-};
-
-module.exports = scraper;
+module.exports = (browserInstance) => scrapeAll(browserInstance)
