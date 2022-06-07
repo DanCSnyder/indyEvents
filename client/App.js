@@ -2,6 +2,8 @@ import React from "react";
 import sampleData from "./sampleData.js";
 import DefaultColumnFilter from "./DefaultColumnFilter.js";
 import GlobalFilter from "./GlobalFilter.js";
+import MapContainer from "./MapContainer.js";
+
 import {
   useTable,
   useSortBy,
@@ -109,6 +111,7 @@ export default function App() {
             return (
               <tr {...row.getRowProps()}>
                 {row.cells.map((cell) => {
+                  console.error('cell', cell)
                   return (
                     <td
                       {...cell.getCellProps()}
@@ -144,6 +147,7 @@ export default function App() {
           Page {pageIndex + 1} of {pageOptions.length}
         </span>
       </div>
+      <MapContainer />
     </>
   );
 }
