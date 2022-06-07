@@ -1,40 +1,13 @@
-import React from 'react';
-import sampleData from './sampleData.js'
-import { useTable, useSortBy, useGlobalFilter, useAsyncDebounce, usePagination } from 'react-table'
-
-// Define a default UI for filtering
-function GlobalFilter({
-  preGlobalFilteredRows,
-  globalFilter,
-  setGlobalFilter,
-}) {
-  const count = preGlobalFilteredRows.length;
-  const [value, setValue] = React.useState(globalFilter);
-  const onChange = (value) => {
-    setGlobalFilter(value || undefined);
-  };
-  //   useAsyncDebounce(value => {
-  //   setGlobalFilter(value || undefined)
-  // }, 200)
-
-  return (
-    <span>
-      Search:{" "}
-      <input
-        value={value || ""}
-        onChange={(e) => {
-          setValue(e.target.value);
-          onChange(e.target.value);
-        }}
-        placeholder={`${count} records...`}
-        style={{
-          fontSize: "1.1rem",
-          border: "0",
-        }}
-      />
-    </span>
-  );
-}
+import React from "react";
+import sampleData from "./sampleData.js";
+import DefaultColumnFilter from "./DefaultColumnFilter.js";
+import GlobalFilter from "./GlobalFilter.js";
+import {
+  useTable,
+  useSortBy,
+  useGlobalFilter,
+  usePagination,
+} from "react-table";
 
 export default function App() {
   const data = React.useMemo(() => sampleData, []);
@@ -43,7 +16,7 @@ export default function App() {
     () => [
       {
         Header: "Name",
-        accessor: "title", // accessor is the "key" in the data
+        accessor: "title",
       },
       {
         Header: "Date",
@@ -61,25 +34,8 @@ export default function App() {
     []
   );
 
-  function DefaultColumnFilter({
-    column: { filterValue, preFilteredRows, setFilter },
-  }) {
-    const count = preFilteredRows.length;
-
-    return (
-      <input
-        value={filterValue || ""}
-        onChange={(e) => {
-          setFilter(e.target.value || undefined); // Set undefined to remove the filter entirely
-        }}
-        placeholder={`Search ${count} records...`}
-      />
-    );
-  }
-
   const defaultColumn = React.useMemo(
     () => ({
-      // Let's set up our default Filter UI
       Filter: DefaultColumnFilter,
     }),
     []
@@ -96,6 +52,7 @@ export default function App() {
     setGlobalFilter,
     canNextPage,
     canPreviousPage,
+    pageOptions,
     page,
     nextPage,
     previousPage,
@@ -118,11 +75,8 @@ export default function App() {
           {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map((column) => (
-                // Add the sorting props to control sorting. For this example
-                // we can add them into the header props
                 <th {...column.getHeaderProps(column.getSortByToggleProps())}>
                   {column.render("Header")}
-                  {/* Add a sort direction indicator */}
                   <span>
                     {column.isSorted
                       ? column.isSortedDesc
@@ -186,7 +140,9 @@ export default function App() {
         <button onClick={() => nextPage()} disabled={!canNextPage}>
           {">"}
         </button>{" "}
-        <span>Page </span>
+        <span>
+          Page {pageIndex + 1} of {pageOptions.length}
+        </span>
       </div>
     </>
   );
