@@ -2,6 +2,8 @@ const express = require('express');
 
 const middleware = require('./config/middleware');
 const router = require('./config/routes');
+const browser = require('./config/browser');
+const scraper = require('./controllers/scraper')
 
 const app = express();
 const port = 3000;

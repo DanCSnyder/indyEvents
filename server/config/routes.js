@@ -1,10 +1,7 @@
-const express = require("express");
+const express = require('express');
 const router = new express.Router();
+const scraper = require ('./../controllers/scraper')
 
-const scraper = require("../controllers/scraper");
-
-let browserInstance = browser.startBrowser();
-
-router.get("/scrape", scraper(browserInstance));
+router.get('/scrape', scraper.scrapeAll);
 
 module.exports = router;
